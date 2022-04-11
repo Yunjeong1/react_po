@@ -1,1 +1,11 @@
-@import 'reset';
+@import './common/reset';
+@import './common/header';
+@import './common/footer';
+
+//main
+@import './main/visual';
+@import './main/content';
+
+//sub
+@import './sub/youtube';
+@import './sub/gallery';
