@@ -17,3 +17,12 @@ footer {
 		text-align: center;
 	}
 }
+
+@media screen and (max-width: $tablet) {
+	footer {
+		.inner {
+			width: 100%;
+			padding: 0px 40px;
+		}
+	}
+}
