@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Header() {
+function Header(props) {
 	const active = { color: 'aqua' };
 	return (
-		<header>
+		<header className={props.type}>
 			<div className='inner'>
 				<h1>
-					<NavLink exact='true' to='/' activeStyle={active}>
+					<NavLink exact to='/' activeStyle={active}>
 						LOGO
 					</NavLink>
 				</h1>

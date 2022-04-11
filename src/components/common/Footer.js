@@ -3,7 +3,9 @@ import React from 'react';
 function Footer() {
 	return (
 		<footer>
-			<h1>Footer</h1>
+			<div className='inner'>
+				<p>2022 DCODELAB &copy; ALL RIGHT DESERVED</p>
+			</div>
 		</footer>
 	);
 }
