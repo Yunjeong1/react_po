@@ -16,6 +16,11 @@ function Header(props) {
 
 				<ul id='gnb'>
 					<li>
+						<NavLink to='/member' activeStyle={active}>
+							Member
+						</NavLink>
+					</li>
+					<li>
 						<NavLink to='/gallery' activeStyle={active}>
 							Gallery
 						</NavLink>

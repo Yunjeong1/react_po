@@ -9,6 +9,7 @@ import Content from './components/main/Content';
 //sub 컴포넌트
 import Youtube from './components/sub/Youtube';
 import Gallery from './components/sub/Gallery';
+import Member from './components/sub/Member';
 
 function App() {
 	return (
@@ -30,6 +31,7 @@ function App() {
 
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/gallery' component={Gallery} />
+			<Route path='/member' component={Member} />
 
 			<Footer />
 		</>
