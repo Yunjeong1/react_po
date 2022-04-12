@@ -1,22 +1,41 @@
-import { useEffect, useRef } from 'react';
+import Layout from '../common/Layout';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function Member() {
-	const frame = useRef(null);
+	const path = process.env.PUBLIC_URL;
+	const [members, setMembers] = useState([]);
 
 	useEffect(() => {
-		frame.current.classList.add('on');
-		return () => {
-			console.log('멤버 컴포넌트 소멸');
-		};
-	}, [frame]);
+		axios.get(`${path}/DB/member.json`).then((json) => {
+			console.log(json.data.data);
+			setMembers(json.data.data);
+		});
+	}, []);
 
 	return (
-		<section className='content member' ref={frame}>
-			<figure></figure>
-			<div className='inner'>
-				<h1>Member</h1>
-			</div>
-		</section>
+		<Layout name={'Member'}>
+			<button
+				onClick={() => {
+					const newMembers = [...members];
+					console.log(newMembers);
+					newMembers[0].name = 'Jane';
+					setMembers(newMembers);
+				}}>
+				멤버정보 변경
+			</button>
+			<ul className='memberList'>
+				{members.map((member, idx) => {
+					return (
+						<li key={idx}>
+							<img src={`${path}/img/${member.pic}`} />
+							<h2>{member.name}</h2>
+							<p>{member.position}</p>
+						</li>
+					);
+				})}
+			</ul>
+		</Layout>
 	);
 }
 

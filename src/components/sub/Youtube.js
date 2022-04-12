@@ -1,23 +1,37 @@
-import { useEffect, useRef } from 'react';
+import Layout from '../common/Layout';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function Youtube() {
-	const frame = useRef(null);
-
+	const [items, setItems] = useState([]);
 	useEffect(() => {
-		frame.current.classList.add('on');
+		const key = 'AIzaSyB81cXmxoWdzbYs8QZUlN_LQskZFT_Xqoo';
+		const num = 5;
+		const id = 'PLMaY0ixOiylihI8kTPQ8Ow3zwbjEcQtBr';
+		const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${key}&maxResults=${num}&playlistId=${id}`;
 
-		return () => {
-			console.log('유튜브 컴포넌트 소멸');
-		};
+		axios.get(url).then((json) => {
+			console.log(json.data.items);
+			setItems(json.data.items);
+		});
 	}, []);
 
 	return (
-		<section className='content youtube' ref={frame}>
-			<figure></figure>
-			<div className='inner'>
-				<h1>Youtube</h1>
-			</div>
-		</section>
+		<Layout name={'Youtube'}>
+			{items.map((item, idx) => {
+				const desc = item.snippet.description;
+				const date = item.snippet.publishedAt;
+
+				return (
+					<article key={idx}>
+						<img src={item.snippet.thumbnails.medium.url} />
+						<h2>{item.snippet.title}</h2>
+						<p>{desc.length > 150 ? desc.substr(0, 150) + '...' : desc}</p>
+						<span>{date.split('T')[0]}</span>
+					</article>
+				);
+			})}
+		</Layout>
 	);
 }
 
