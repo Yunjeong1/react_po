@@ -30,6 +30,11 @@ function Header(props) {
 							Youtube
 						</NavLink>
 					</li>
+					<li>
+						<NavLink to='/location' activeStyle={active}>
+							Location
+						</NavLink>
+					</li>
 				</ul>
 
 				<FontAwesomeIcon icon={faBars} />
