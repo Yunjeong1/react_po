@@ -5,7 +5,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 //main 컴포넌트
 import Visual from './components/main/Visual';
-import Content from './components/main/Content';
+import News from './components/main/News';
 //sub 컴포넌트
 import Youtube from './components/sub/Youtube';
 import Gallery from './components/sub/Gallery';
@@ -23,7 +23,7 @@ function App() {
 					{/* 메인에만 적용되는 header */}
 					<Header type={'main'} />
 					<Visual />
-					<Content />
+					<News />
 				</Route>
 
 				<Route path='/'>
