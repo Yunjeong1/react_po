@@ -11,6 +11,8 @@ import Youtube from './components/sub/Youtube';
 import Gallery from './components/sub/Gallery';
 import Member from './components/sub/Member';
 import Location from './components/sub/Location';
+import Join from './components/sub/Join';
+import Community from './components/sub/Community';
 
 function App() {
 	return (
@@ -31,9 +33,11 @@ function App() {
 			</Switch>
 
 			<Route path='/youtube' component={Youtube} />
+			<Route path='/community' component={Community} />
 			<Route path='/gallery' component={Gallery} />
 			<Route path='/member' component={Member} />
 			<Route path='/location' component={Location} />
+			<Route path='/join' component={Join} />
 
 			<Footer />
 		</>

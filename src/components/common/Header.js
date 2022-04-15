@@ -21,6 +21,11 @@ function Header(props) {
 						</NavLink>
 					</li>
 					<li>
+						<NavLink to='/community' activeStyle={active}>
+							Community
+						</NavLink>
+					</li>
+					<li>
 						<NavLink to='/gallery' activeStyle={active}>
 							Gallery
 						</NavLink>
@@ -33,6 +38,11 @@ function Header(props) {
 					<li>
 						<NavLink to='/location' activeStyle={active}>
 							Location
+						</NavLink>
+					</li>
+					<li>
+						<NavLink to='/join' activeStyle={active}>
+							Join
 						</NavLink>
 					</li>
 				</ul>
