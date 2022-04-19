@@ -23,7 +23,7 @@ function News() {
 		localStorage.setItem('posts', JSON.stringify(posts));
 	}, []);
 	return (
-		<section id='news'>
+		<section id='news' className='myScroll'>
 			<h1>Recent News</h1>
 
 			<ul>
