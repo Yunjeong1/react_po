@@ -7,32 +7,11 @@ function Community() {
 	const editInput = useRef(null);
 	const editTextarea = useRef(null);
 
-	/*
-	const dummyPosts = [
-		{ title: 'Hello5', content: 'Here comes description in detail.' },
-		{ title: 'Hello4', content: 'Here comes description in detail.' },
-		{ title: 'Hello3', content: 'Here comes description in detail.' },
-		{ title: 'Hello2', content: 'Here comes description in detail.' },
-		{ title: 'Hello1', content: 'Here comes description in detail.' },
-	];
-*/
-
 	//localStorage의 데이터를 반환하는 함수
 	const getLocalData = () => {
-		const data = localStorage.getItem('posts');
-		const dummyData = [
-			{ title: 'Hello5', content: 'Here comes description in detail.' },
-			{ title: 'Hello4', content: 'Here comes description in detail.' },
-			{ title: 'Hello3', content: 'Here comes description in detail.' },
-			{ title: 'Hello2', content: 'Here comes description in detail.' },
-			{ title: 'Hello1', content: 'Here comes description in detail.' },
-		];
-
-		if (data) {
-			return JSON.parse(data);
-		} else {
-			return dummyData;
-		}
+		let data = localStorage.getItem('posts');
+		data = JSON.parse(data);
+		return data;
 	};
 
 	//getLocalData로 반환된 값을 posts 스테이트에 저장
@@ -54,6 +33,7 @@ function Community() {
 			return;
 		}
 		setPosts([{ title: inputVal, content: textareaVal }, ...posts]);
+		resetPost();
 	};
 
 	//순서2 - 삭제할 순서를 인수로 전달
@@ -64,8 +44,8 @@ function Community() {
 	};
 
 	const updatePost = (index) => {
-		const inputVal = input.current.value.trim();
-		const textareaVal = textarea.current.value.trim();
+		const inputVal = editInput.current.value.trim();
+		const textareaVal = editTextarea.current.value.trim();
 
 		if (!inputVal || !textareaVal) {
 			alert('제목과 본문을 모두 입력하세요');
@@ -156,7 +136,7 @@ function Community() {
 									</div>
 								</>
 							) : (
-								// 반복도는 해당 state에 enabelUpdate값이 false면 출력화면 렌더링
+								// 반복을 도는 해당 state에 enabelUpdate값이 false면 출력화면 렌더링
 								<>
 									<h2>{post.title}</h2>
 									<p>{post.content}</p>
