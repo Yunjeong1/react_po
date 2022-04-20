@@ -2,6 +2,7 @@ import Layout from '../common/Layout';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Maconry from 'react-masonry-component';
+import Popup from '../common/Popup';
 
 function Masonry() {
 	const path = process.env.PUBLIC_URL;
@@ -13,10 +14,13 @@ function Masonry() {
 
 	const frame = useRef(null);
 	const input = useRef(null);
+	const pop = useRef(null);
 	const [items, setItems] = useState([]);
 	//로딩바 처리할 스테이트 추가
 	const [loading, setLoading] = useState(true);
 	const [enableClick, setEnableClick] = useState(true);
+	const [ready, setReady] = useState(false);
+	const [index, setIndex] = useState(0);
 
 	//async await 구문으로 모든 flickr데이터가 로딩된후 frame에 on을 붙여서 활성화하는 함수 정의
 	const getFlickr = async (opt) => {
@@ -42,6 +46,7 @@ function Masonry() {
 				return;
 			}
 			setItems(json.data.photos.photo);
+			setReady(true);
 		});
 		//flickr데이터 호출이 완료된 순간, masonry가 정렬하는 시간을 벌어죽 위해서
 		//1초뒤에 로딩바 사라지고 레이아웃이 위로 올라오는 모션 처리
@@ -89,64 +94,80 @@ function Masonry() {
 	}, []);
 
 	return (
-		<Layout name={'Masonry'}>
-			{/* loading state값이 true일때 로딩바 보이게 처리하고 */}
-			{loading ? (
-				<img className='loading' src={path + '/img/loading.gif'} />
-			) : null}
-			<div className='searchBox'>
-				<input
-					type='text'
-					ref={input}
-					onKeyUp={(e) => {
-						//입력된 키보드값이 엔터일때 함수 실행
-						if (e.key === 'Enter') {
-							showSearch();
+		<>
+			<Layout name={'Masonry'}>
+				{/* loading state값이 true일때 로딩바 보이게 처리하고 */}
+				{loading ? (
+					<img className='loading' src={path + '/img/loading.gif'} />
+				) : null}
+				<div className='searchBox'>
+					<input
+						type='text'
+						ref={input}
+						onKeyUp={(e) => {
+							//입력된 키보드값이 엔터일때 함수 실행
+							if (e.key === 'Enter') {
+								showSearch();
+							}
+						}}
+					/>
+					<button onClick={showSearch}>search</button>
+				</div>
+				{/* 각 버튼 클릭시 setLoading(true)로 로딩바 보이게 처리 */}
+				<button
+					onClick={() => {
+						if (enableClick) {
+							setEnableClick(false);
+							setLoading(true);
+							frame.current.classList.remove('on');
+							//getFlickr가 호출되서 컴포넌트가 로딩완료되면 내부적으로 다시 로딩바 사라짐
+							getFlickr({
+								type: 'interest',
+								count: 50,
+							});
 						}
-					}}
-				/>
-				<button onClick={showSearch}>search</button>
-			</div>
-			{/* 각 버튼 클릭시 setLoading(true)로 로딩바 보이게 처리 */}
-			<button
-				onClick={() => {
-					if (enableClick) {
-						setEnableClick(false);
-						setLoading(true);
-						frame.current.classList.remove('on');
-						//getFlickr가 호출되서 컴포넌트가 로딩완료되면 내부적으로 다시 로딩바 사라짐
-						getFlickr({
-							type: 'interest',
-							count: 50,
-						});
-					}
-				}}>
-				interest 갤러리 보기
-			</button>
+					}}>
+					interest 갤러리 보기
+				</button>
 
-			<div className='frame' ref={frame}>
-				{/* 움직일 자식 컴포넌트를 감싸주고 옵션설정 */}
-				<Maconry
-					elementType={'div'} //warpping 태그명 지정
-					options={masonryOptions} //위에서 설정한 옵션값 적용
-				>
-					{items.map((item, idx) => {
-						return (
-							<article key={idx}>
-								<div className='inner'>
-									<div className='pic'>
-										<img
-											src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`}
-										/>
+				<div className='frame' ref={frame}>
+					{/* 움직일 자식 컴포넌트를 감싸주고 옵션설정 */}
+					<Maconry
+						elementType={'div'} //warpping 태그명 지정
+						options={masonryOptions} //위에서 설정한 옵션값 적용
+					>
+						{items.map((item, idx) => {
+							return (
+								<article
+									key={idx}
+									onClick={() => {
+										setIndex(idx);
+										pop.current.open();
+									}}>
+									<div className='inner'>
+										<div className='pic'>
+											<img
+												src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`}
+											/>
+										</div>
+										<h2>{item.title}</h2>
 									</div>
-									<h2>{item.title}</h2>
-								</div>
-							</article>
-						);
-					})}
-				</Maconry>
-			</div>
-		</Layout>
+								</article>
+							);
+						})}
+					</Maconry>
+				</div>
+			</Layout>
+
+			<Popup ref={pop}>
+				{ready && (
+					<img
+						src={`https://live.staticflickr.com/${items[index].server}/${items[index].id}_${items[index].secret}_b.jpg`}
+					/>
+				)}
+				<span onClick={() => pop.current.close()}>close</span>
+			</Popup>
+		</>
 	);
 }
 
