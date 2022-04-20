@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useState, forwardRef, useImperativeHandle } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Pop = styled.aside`
 	width: 100%;
@@ -15,14 +17,14 @@ const Pop = styled.aside`
 		color: #fff;
 		cursor: pointer;
 		position: absolute;
-		top: 3vw;
-		right: 3vw;
+		top: -50px;
+		right: 0px;
 	}
 
 	.content {
 		width: 100%;
 		height: 100%;
-		overflow: hidden;
+		position: relative;
 
 		iframe {
 			width: 100%;
@@ -38,13 +40,33 @@ const Pop = styled.aside`
 	}
 `;
 
-function Popup(props) {
+const Popup = forwardRef((props, ref) => {
+	const [open, setOpen] = useState(false);
+
+	useImperativeHandle(ref, () => {
+		return {
+			open: () => setOpen(true),
+			close: () => setOpen(false),
+		};
+	});
+
 	return (
-		<Pop>
-			<span onClick={() => props.pop(false)}>close</span>
-			<div className='content'>{props.children}</div>
-		</Pop>
+		<AnimatePresence>
+			{open && (
+				<>
+					<Pop>
+						<motion.div
+							className='con'
+							init={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}>
+							{props.children}
+						</motion.div>
+					</Pop>
+				</>
+			)}
+		</AnimatePresence>
 	);
-}
+});
 
 export default Popup;

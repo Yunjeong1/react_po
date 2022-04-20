@@ -1,9 +1,10 @@
 import Layout from '../common/Layout';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Popup from '../common/Popup';
 
 function Youtube() {
+	const pop = useRef(null);
 	const key = 'AIzaSyB81cXmxoWdzbYs8QZUlN_LQskZFT_Xqoo';
 	const num = 5;
 	const id = 'PLMaY0ixOiyljR7EsFnCk9HPiR7eNsI6Yd';
@@ -36,8 +37,8 @@ function Youtube() {
 						<article
 							key={idx}
 							onClick={() => {
-								setOpen(true);
 								setIndex(idx);
+								pop.current.open();
 							}}>
 							<img src={item.snippet.thumbnails.medium.url} />
 							<h2>{item.snippet.title}</h2>
@@ -49,16 +50,11 @@ function Youtube() {
 			</Layout>
 
 			{/* open state값이 true일때 팝업이 보이고 그렇지 않으면 없앰 */}
-			{open ? (
-				<Popup pop={setOpen}>
-					<iframe
-						src={
-							'https://www.youtube.com/embed/' +
-							items[index].snippet.resourceId.videoId
-						}
-						frameBorder='0'></iframe>
-				</Popup>
-			) : null}
+			<Popup ref={pop}>
+				데이터
+				{/* <iframe src={'https://www.youtube.com/embed/'+items[index].snippet.resourceId.videoId} frameBorder="0"></iframe> */}
+				<span onClick={() => pop.current.close()}>close</span>
+			</Popup>
 		</>
 	);
 }
