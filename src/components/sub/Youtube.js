@@ -11,17 +11,16 @@ function Youtube() {
 	const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${key}&maxResults=${num}&playlistId=${id}`;
 
 	const [items, setItems] = useState([]);
-
-	//팝업의 생성유무를 관리하는 state 생성
-	const [open, setOpen] = useState(false);
-
-	//article 클릭시 클릭한 리스트의 순서값이 담길 state
 	const [index, setIndex] = useState(0);
+	//데이터 로딩에 관련한 state추가
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		axios.get(url).then((json) => {
 			console.log(json.data.items);
 			setItems(json.data.items);
+			//모든 데이터가 호출되고 state값에 담기면 loding state값 true로 변경
+			setLoading(true);
 		});
 	}, []);
 
@@ -33,7 +32,6 @@ function Youtube() {
 					const date = item.snippet.publishedAt;
 
 					return (
-						//클릭이벤트 발생시 open값 true로 변경
 						<article
 							key={idx}
 							onClick={() => {
@@ -49,10 +47,16 @@ function Youtube() {
 				})}
 			</Layout>
 
-			{/* open state값이 true일때 팝업이 보이고 그렇지 않으면 없앰 */}
 			<Popup ref={pop}>
-				데이터
-				{/* <iframe src={'https://www.youtube.com/embed/'+items[index].snippet.resourceId.videoId} frameBorder="0"></iframe> */}
+				{/*loading이 true일떄 팝업안에 유튜브 데이터 출력*/}
+				{loading && (
+					<iframe
+						src={
+							'https://www.youtube.com/embed/' +
+							items[index].snippet.resourceId.videoId
+						}
+						frameBorder='0'></iframe>
+				)}
 				<span onClick={() => pop.current.close()}>close</span>
 			</Popup>
 		</>

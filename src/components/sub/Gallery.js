@@ -5,7 +5,6 @@ import Popup from '../common/Popup';
 
 function Gallery() {
 	const [items, setItems] = useState([]);
-	const [open, setOpen] = useState(false);
 	const [index, setIndex] = useState(0);
 
 	useEffect(() => {
@@ -31,7 +30,6 @@ function Gallery() {
 						<div className='wrap' key={idx}>
 							<article
 								onClick={() => {
-									setOpen(true);
 									setIndex(idx);
 								}}>
 								<div className='inner'>
@@ -50,14 +48,6 @@ function Gallery() {
 					);
 				})}
 			</Layout>
-
-			{open ? (
-				<Popup pop={setOpen}>
-					<img
-						src={`https://live.staticflickr.com/${items[index].server}/${items[index].id}_${items[index].secret}_b.jpg`}
-					/>
-				</Popup>
-			) : null}
 		</>
 	);
 }
