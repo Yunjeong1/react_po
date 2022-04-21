@@ -5,8 +5,6 @@ export default class Anim {
 		this.startTime = performance.now();
 		this.currentValue = null;
 
-		console.log(this.selector);
-
 		if (this.option.prop === 'scroll')
 			this.currentValue = this.selector.scrollY;
 		else

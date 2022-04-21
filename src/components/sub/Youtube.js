@@ -1,33 +1,21 @@
 import Layout from '../common/Layout';
-import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
+//store에 있는 데이터를 가져오기 위한 useSelector import
+import { useSelector } from 'react-redux';
 import Popup from '../common/Popup';
 
 function Youtube() {
+	//해당 컴포넌트 함수 호출시 store로부터 youtube데이터를 useSelector로 가져옴
+	//store에서 youtubeReducer데이터 가져옴(빈배열)
+	const vidData = useSelector((state) => state.youtubeReducer.youtube);
 	const pop = useRef(null);
-	const key = 'AIzaSyB81cXmxoWdzbYs8QZUlN_LQskZFT_Xqoo';
-	const num = 5;
-	const id = 'PLMaY0ixOiyljR7EsFnCk9HPiR7eNsI6Yd';
-	const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${key}&maxResults=${num}&playlistId=${id}`;
-
-	const [items, setItems] = useState([]);
 	const [index, setIndex] = useState(0);
-	//데이터 로딩에 관련한 state추가
-	const [loading, setLoading] = useState(false);
-
-	useEffect(() => {
-		axios.get(url).then((json) => {
-			console.log(json.data.items);
-			setItems(json.data.items);
-			//모든 데이터가 호출되고 state값에 담기면 loding state값 true로 변경
-			setLoading(true);
-		});
-	}, []);
 
 	return (
 		<>
 			<Layout name={'Youtube'}>
-				{items.map((item, idx) => {
+				{/* reducer를 통해 store로부터 전달받은 vidData로 리스트 출력 */}
+				{vidData.map((item, idx) => {
 					const desc = item.snippet.description;
 					const date = item.snippet.publishedAt;
 
@@ -50,12 +38,12 @@ function Youtube() {
 
 			{/* forwardRef로 내보내진 컴포넌트를 활용하기 위해서는 부모컴포넌트에서 useRef로 참조 */}
 			<Popup ref={pop}>
-				{/*loading이 true일떄 팝업안에 유튜브 데이터 출력*/}
-				{loading && (
+				{/* 해당 vidData값이 있을때 팝업안에 데이터 출력 */}
+				{vidData.length !== 0 && (
 					<iframe
 						src={
 							'https://www.youtube.com/embed/' +
-							items[index].snippet.resourceId.videoId
+							vidData[index].snippet.resourceId.videoId
 						}
 						frameBorder='0'></iframe>
 				)}
