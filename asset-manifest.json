@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react_po/static/css/main.bf32584f.css",
+    "main.js": "/react_po/static/js/main.e631c6ef.js",
+    "index.html": "/react_po/index.html",
+    "main.bf32584f.css.map": "/react_po/static/css/main.bf32584f.css.map",
+    "main.e631c6ef.js.map": "/react_po/static/js/main.e631c6ef.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bf32584f.css",
+    "static/js/main.e631c6ef.js"
+  ]
+}
