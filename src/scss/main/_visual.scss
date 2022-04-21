@@ -4,4 +4,18 @@
 	background: #555;
 	position: relative;
 	z-index: 1;
+	padding: 200px 0 100px;
+
+	.swiper {
+		height: 100%;
+
+		.swiper-slide {
+			background: aqua;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font: bold 50px/1 'arial';
+			color: #fff;
+		}
+	}
 }
