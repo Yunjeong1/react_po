@@ -13,6 +13,7 @@ function Main() {
 	//세로 위치값이 배열로 참조될 pos객체 추가
 	const pos = useRef([]);
 	const [index, setIndex] = useState(0);
+	const [scrolled, setScrolled] = useState(0);
 
 	//참조된 main의 자식인 .myScroll요소를 모두 찾은뒤, 세로 위치값을 pos(ref)에 옮겨담을 함수를 정의
 	const getPos = () => {
@@ -25,6 +26,7 @@ function Main() {
 	const activation = () => {
 		const base = -200;
 		let scroll = window.scrollY;
+		setScrolled(scroll);
 		const btns = main.current.querySelectorAll('.btns li');
 
 		pos.current.map((pos, idx) => {
@@ -59,13 +61,17 @@ function Main() {
 		});
 	}, [index]);
 
+	useEffect(() => {
+		console.log(scrolled);
+	}, [scrolled]);
+
 	return (
 		<>
 			<main ref={main}>
 				<Header type={'main'} />
 				<Visual />
 				<News />
-				<Vids />
+				<Vids scrolled={scrolled} posStart={pos.current[2]} />
 				<Pics />
 				<Btn setIndex={setIndex} />
 			</main>
