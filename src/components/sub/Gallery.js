@@ -1,67 +1,52 @@
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../common/Layout';
-import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
-import Popup from '../common/Popup';
 
 function Gallery() {
-	const [items, setItems] = useState([]);
-	const [index, setIndex] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const pop = useRef(null);
+	const { flickr } = useSelector((state) => state.flickrReducer);
+	const dispatch = useDispatch();
+	const [opt, setOpt] = useState({ type: 'interest' });
+	const input = useRef(null);
 
 	useEffect(() => {
-		const base = 'https://www.flickr.com/services/rest/?';
-		const method_people = 'flickr.people.getPhotos';
-		const method_search = 'flickr.photos.search';
-		const username = '195294341@N02';
-		const key = '24d03e5e0bfb87d434ce0c70071a6ff9';
-		const per_page = 25;
-		const url = `${base}method=${method_people}&api_key=${key}&per_page=${per_page}&format=json&nojsoncallback=1&user_id=${username}`;
+		dispatch({ type: 'FLICKR_START', opt });
+	}, [opt]);
 
-		axios.get(url).then((json) => {
-			console.log(json.data);
-			setItems(json.data.photos.photo);
-			setLoading(true);
-		});
-	}, []);
+	const initGallery = () => {
+		setOpt({ type: 'interest' });
+	};
+
+	const searchTag = () => {
+		const tag = input.current.value;
+		setOpt({ type: 'search', tags: tag });
+	};
 
 	return (
-		<>
-			<Layout name={'Gallery'}>
-				{items.map((item, idx) => {
+		<Layout name={'Gallery'}>
+			<button onClick={initGallery}>갤러리 초기화</button>
+
+			<div className='inputBox'>
+				<input type='text' ref={input} />
+				<button onClick={searchTag}>검색</button>
+			</div>
+
+			<ul>
+				{flickr.map((item, idx) => {
 					return (
-						<div className='wrap' key={idx}>
-							<article
-								onClick={() => {
-									setIndex(idx);
-									pop.current.open();
-								}}>
-								<div className='inner'>
-									<div className='pic'>
-										<img
-											src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`}
-										/>
-									</div>
-									<div className='text'>
-										<p>{item.title}</p>
-										<span>by {item.owner}</span>
-									</div>
+						<li key={idx}>
+							<div className='inner'>
+								<div className='pic'>
+									<img
+										src={`https://live.staticflickr.com/${item.server}/${item.id}_${item.secret}_m.jpg`}
+									/>
 								</div>
-							</article>
-						</div>
+								<h2>{item.title}</h2>
+							</div>
+						</li>
 					);
 				})}
-			</Layout>
-
-			<Popup ref={pop}>
-				{loading && (
-					<img
-						src={`https://live.staticflickr.com/${items[index].server}/${items[index].id}_${items[index].secret}_b.jpg`}
-					/>
-				)}
-				<span onClick={() => pop.current.close()}>close</span>
-			</Popup>
-		</>
+			</ul>
+		</Layout>
 	);
 }
 
