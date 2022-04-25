@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 
 const Menu = forwardRef((props, ref) => {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const active = { color: 'aqua' };
 
 	useImperativeHandle(ref, () => {
@@ -17,14 +17,18 @@ const Menu = forwardRef((props, ref) => {
 		<AnimatePresence>
 			{open && (
 				<>
-					<motion.nav>
+					<motion.nav
+						initial={{ x: -280, transition: { duration: 0.5 } }}
+						animate={{ x: 0, transition: { duration: 0.5 } }}
+						exit={{ x: -280, transition: { duration: 0.5 } }}
+						onClick={() => setOpen(false)}>
 						<h1>
 							<NavLink exact to='/' activeStyle={active}>
 								LOGO
 							</NavLink>
 						</h1>
 
-						<ul id='gnb'>
+						<ul id='gnb' onClick={() => setOpen(false)}>
 							<li>
 								<NavLink to='/member' activeStyle={active}>
 									Member
