@@ -1,0 +1,24 @@
+nav {
+	width: 280px;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.9);
+	z-index: 10;
+	padding: 50px;
+
+	h1 {
+		a {
+			color: #fff;
+		}
+	}
+
+	#gnb {
+		li {
+			a {
+				color: #fff;
+			}
+		}
+	}
+}

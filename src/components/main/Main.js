@@ -62,7 +62,7 @@ function Main() {
 	}, [index]);
 
 	useEffect(() => {
-		console.log(scrolled);
+		//console.log(scrolled);
 	}, [scrolled]);
 
 	return (
